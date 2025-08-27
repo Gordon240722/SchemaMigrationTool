@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".github\workflow\migrate.yml" />
+    <None Include=".github\workflows\migrate.yml" />
   </ItemGroup>
 
 </Project>
