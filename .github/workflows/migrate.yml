@@ -24,5 +24,8 @@ jobs:
     - name: Build project
       run: dotnet build --configuration Release
 
+    - name: Publish project
+      run: dotnet publish ./SchemaMigrationTool/SchemaMigrationTool.csproj --configuration Release --output ./published
+
     - name: Run FluentMigrator (multi-tenant)
-      run: dotnet run --project ./SchemaMigrationTool/SchemaMigrationTool.csproj
+      run: dotnet ./published/SchemaMigrationTool.dll
