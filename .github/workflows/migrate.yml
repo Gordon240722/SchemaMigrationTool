@@ -25,4 +25,4 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Run FluentMigrator (multi-tenant)
-      run: dotnet run --project ./SchemaMigrationTool/SchemaMigrationTool
+      run: dotnet run --project ./SchemaMigrationTool/SchemaMigrationTool.csproj
