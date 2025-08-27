@@ -9,3 +9,5 @@ IConfigurationRoot configuration = builder.Build();
 var migrationRunner = new MigrationRunner(configuration);
 
 migrationRunner.FluentMigrateAllTenants();
+
+//trigger workflow test
