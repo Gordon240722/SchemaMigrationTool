@@ -1,0 +1,28 @@
+name: Run FluentMigrator for all tenants
+
+on:
+  push:
+    branches: [ master ]   # 你也可以改成其他 branch 名稱
+  workflow_dispatch:     # 也支援手動執行
+
+jobs:
+  migrate:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build project
+      run: dotnet build --configuration Release
+
+    - name: Run FluentMigrator (multi-tenant)
+      run: dotnet run --project ./SchemaMigrationTool/SchemaMigrationTool

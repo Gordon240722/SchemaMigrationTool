@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SchemaMigrationTool.Data;
 using SchemaMigrationTool.Models;
-using System.Text;
 
 namespace SchemaMigrationTool
 {
