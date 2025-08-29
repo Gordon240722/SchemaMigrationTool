@@ -52,7 +52,7 @@ namespace SchemaMigrationTool
 
             var tenants = _configuration.GetSection("Tenants").Get<List<TenantSettings>>(); // 讀取租戶
             var connectionString = _configuration.GetConnectionString("DefaultConnection"); // 讀取連線字串
-
+            Console.WriteLine($"Connection String: {connectionString}"); // 在GitHub Actions中查看連線字串是否正確
             if (tenants == null || tenants.Count == 0)
             {
                 Console.WriteLine("沒有找到任何租戶設定，請檢查 appsettings.json 中的 Tenants 設定。");
