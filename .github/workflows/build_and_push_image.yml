@@ -25,6 +25,9 @@ jobs:
           IMAGE_NAME=ghcr.io/gordon240722/schema-migrator
           docker build -t $IMAGE_NAME:latest .
 
+      - name: Show repo owner
+        run: echo "repo owner: ${{ github.repository_owner }}"
+
       - name: Push Docker image
         run: |
           IMAGE_NAME=ghcr.io/gordon240722/schema-migrator
