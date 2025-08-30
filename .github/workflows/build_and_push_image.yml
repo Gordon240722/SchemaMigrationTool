@@ -26,10 +26,11 @@ jobs:
 
     - name: Build Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ env.repo_owner_lower }}/schema-migrator
-        docker build -t $IMAGE_NAME:latest .
+    	IMAGE_NAME=ghcr.io/gordon240722/schema-migrator
+    	docker build -t $IMAGE_NAME:latest .
+
 
     - name: Push Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ env.repo_owner_lower }}/schema-migrator
+        IMAGE_NAME=ghcr.io/gordon240722/schema-migrator
         docker push $IMAGE_NAME:latest
