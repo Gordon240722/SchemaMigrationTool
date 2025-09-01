@@ -26,8 +26,13 @@ jobs:
       - name: Run Tests with Coverage (Coverlet)
         run: dotnet test --collect:"XPlat Code Coverage"
         
-      - name: Debug - Show coverage output
-        run: find ./TestResults -name "coverage.cobertura.xml"
+      - name: List current directory recursively
+        run: |
+          pwd
+          ls -R
+        
+      #- name: Debug - Show coverage output
+      #run: find ./TestResults -name "coverage.cobertura.xml"
           
       # 安裝轉換工具，產出 SonarQube 格式的 coverage report
       # 指定安裝舊版本
