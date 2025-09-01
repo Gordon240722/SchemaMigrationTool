@@ -26,22 +26,16 @@ jobs:
       # 執行測試並收集 coverage 資料
       - name: Run Tests with Coverage (Coverlet)
         working-directory: ./SchemaMigrationTool
-        run: dotnet test --collect:"XPlat Code Coverage"
-        
-      - name: List TestResults folder recursively
+        run: dotnet test --collect:"XPlat Code Coverage" --logger "console;verbosity=detailed"
+
+      # 列出 coverage xml，確保有產生檔案
+      - name: List coverage files
         working-directory: ./SchemaMigrationTool
-        run: |
-          pwd
-          ls -R
-          ls -l TestResults || echo "No TestResults folder found"
-          
-      #- name: Debug - Show coverage output
-      #  working-directory: ./SchemaMigrationTool
-      #  run: find ./TestResults -name "coverage.cobertura.xml"
-          
+        run: find . -name "coverage.cobertura.xml"
+
       # 安裝轉換工具，產出 SonarQube 格式的 coverage report
-      # 指定安裝舊版本
       - name: Convert Coverage to SonarQube Format
+        working-directory: ./SchemaMigrationTool
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.26
           export PATH="$PATH:/home/runner/.dotnet/tools"
