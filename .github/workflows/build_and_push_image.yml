@@ -38,6 +38,7 @@ jobs:
           reportgenerator -reports:"./SchemaMigrationTool.Tests/TestResults/*/coverage.cobertura.xml" -targetdir:"./coverage-report" -reporttypes:SonarQube
 
       # 執行 SonarQube 掃描
+      # 關閉SonarQube Automatic Analysis
       - name: SonarQube Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
