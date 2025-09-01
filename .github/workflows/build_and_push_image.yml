@@ -23,16 +23,16 @@ jobs:
         run: dotnet restore
 
       # 執行測試並收集 coverage 資料
-      - name: Run Tests with Coverage
+      - name: Run Tests with Coverage (Coverlet)
         run: dotnet test --collect:"XPlat Code Coverage"
           
       # 安裝轉換工具，產出 SonarQube 格式的 coverage report
       # 指定安裝舊版本
       - name: Convert Coverage to SonarQube Format
         run: |
-            dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.26
-            export PATH="$PATH:/home/runner/.dotnet/tools"
-            reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:SonarQube
+          dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.26
+          export PATH="$PATH:/home/runner/.dotnet/tools"
+          reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:SonarQube
 
       # 執行 SonarQube 掃描
       - name: SonarQube Scan
