@@ -20,19 +20,24 @@ jobs:
           dotnet-version: '6.0.x'
 
       - name: Restore dependencies
+        working-directory: ./SchemaMigrationTool
         run: dotnet restore
 
       # 執行測試並收集 coverage 資料
       - name: Run Tests with Coverage (Coverlet)
+        working-directory: ./SchemaMigrationTool
         run: dotnet test --collect:"XPlat Code Coverage"
         
-      - name: List current directory recursively
+      - name: List TestResults folder recursively
+        working-directory: ./SchemaMigrationTool
         run: |
           pwd
           ls -R
-        
+          ls -l TestResults || echo "No TestResults folder found"
+          
       #- name: Debug - Show coverage output
-      #run: find ./TestResults -name "coverage.cobertura.xml"
+      #  working-directory: ./SchemaMigrationTool
+      #  run: find ./TestResults -name "coverage.cobertura.xml"
           
       # 安裝轉換工具，產出 SonarQube 格式的 coverage report
       # 指定安裝舊版本
