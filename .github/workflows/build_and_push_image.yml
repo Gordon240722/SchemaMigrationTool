@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 安裝正確版本的 .NET
+      # 安裝正確版本的 .NET (改成 6.0.x)
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
@@ -26,12 +26,16 @@ jobs:
       - name: Run Tests with Coverage (Coverlet)
         run: dotnet test SchemaMigrationTool.Tests --collect:"XPlat Code Coverage" --logger "console;verbosity=detailed"
 
+      # 列出 coverage 檔案，確認有產生
+      - name: List coverage files
+        run: ls -R ./SchemaMigrationTool.Tests/TestResults/
+
       # 安裝轉換工具，產出 SonarQube 格式的 coverage report
       - name: Convert Coverage to SonarQube Format
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.26
           export PATH="$PATH:/home/runner/.dotnet/tools"
-          reportgenerator -reports:"./SchemaMigrationTool.test/TestResults/*/coverage.cobertura.xml" -targetdir:"./coverage-report" -reporttypes:SonarQube
+          reportgenerator -reports:"./SchemaMigrationTool.Tests/TestResults/*/coverage.cobertura.xml" -targetdir:"./coverage-report" -reporttypes:SonarQube
 
       # 執行 SonarQube 掃描
       - name: SonarQube Scan
