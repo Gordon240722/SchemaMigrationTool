@@ -1,9 +1,20 @@
+# 專案背景與角色
+本專案為我個人開發的 Side Project，目的是學習並實作多租戶架構下的資料庫 Migration 管理與 CI/CD 自動化流程，參考自我在實務工作中遇到的痛點
+
+# 流程
+每次執行 migrate 指令：
+1. 讀取租戶清單
+2. 對每個租戶執行：
+   - 檢查 Version Table（每個 schema 獨立）</br>
+   - 套用 FluentMigrator 指定 schema 的 migration
+
 # 前置作業 
 - 安裝 Visual Studio
 - 安裝 .NET 6 SDK，執行以下命令查看：
    > dotnet --list-sdks
 - 看到類似以下輸出，確認已安裝 .NET 6.x 版本：
   > 6.0.xxx [路徑]
+
 # 建立專案 
 - 專案類型：主控台應用程式（Console App）
 - 主要用途：執行多 schema 的資料庫 migration
@@ -12,6 +23,7 @@
 - 其他資訊
   - 使用 .NET 6 框架（目前仍受支援）
   - 可啟用容器支援（Docker），Dockerfile 稍後新增
+
 # 多租戶 Migration 實作 
 本專案起初使用 EF Core 進行 Migration，但在面對多租戶（Multi-Tenant）結構下，EF Core 的 Migration 機制難以做到每個 schema 隔離、版本追蹤獨立，於是改採更專業的遷移管理工具
 ### 為什麼使用 FluentMigrator？ 
@@ -54,6 +66,7 @@ public class TenantVersionTableMetaData : IVersionTableMetaData
 3. 環境變數與 CI/CD Secret 管理
   - 本機: .env + dotenv.net
   - GitHub Actions: 使用 secrets.DEFAULT_CONNECTION 設定連線字串
+
 # 自動化部署與執行：GitHub Actions + Docker 
 本專案支援自動打包成 Docker Image 並推送至 GitHub Packages（GHCR），也可在本地或 CI/CD 環境中以容器執行資料庫 Migration 
 ## Docker 化專案 使用官方 SQL Server Docker Image 建立資料庫： 
@@ -79,15 +92,15 @@ ENTRYPOINT ["dotnet", "SchemaMigrationTool.dll"]
 2. 撰寫 CI 工作流程 yml
 3. 在本地執行 Container + Migration
    1. 登入 GHCR：
-      > echo <your_pat_token> | docker login ghcr.io -u gordon240722 --password-stdin
+      > echo <your_pat_token> | docker login ghcr.io -u <your-username> --password-stdin
    3. 建立 Network 讓 App & DB 通訊：
       > docker network create app-network
    5. 啟動 SQL Server 並加入網路：
-      > docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" --network app-network --name sqlserver -d mcr.microsoft.com/mssql/server:2022-latest
+      > docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<your-password>" --network app-network --name sqlserver -d mcr.microsoft.com/mssql/server:2022-latest
    7. 建立資料庫：
-      > docker run -it --rm --network app-network mcr.microsoft.com/mssql-tools \ /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "YourStrong!Passw0rd" \ -Q "CREATE DATABASE TenantSampleDb"
+      > docker run -it --rm --network app-network mcr.microsoft.com/mssql-tools \ /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P "<your-password>" \ -Q "CREATE DATABASE TenantSampleDb"
    9. 執行 Migration：
-       > docker run --rm --network app-network \ -e DB_HOST=sqlserver \ -e DB_PORT=1433 \ -e DB_USER=sa \ -e DB_PASS=YourStrong!Passw0rd \ ghcr.io/gordon240722/schema-migrator:latest migrate
+       > docker run --rm --network app-network \ -e DB_HOST=sqlserver \ -e DB_PORT=1433 \ -e DB_USER=sa \ -e DB_PASS=<your-password> \ ghcr.io/<your-username>/schema-migrator:latest migrate
 ### 結果驗證
 ```
 正在執行 Schema Migrate: TenantA（Schema: tenant_a）
