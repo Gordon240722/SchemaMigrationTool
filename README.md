@@ -66,6 +66,10 @@ public class TenantVersionTableMetaData : IVersionTableMetaData
 3. 環境變數與 CI/CD Secret 管理
   - 本機: .env + dotenv.net
   - GitHub Actions: 使用 secrets.DEFAULT_CONNECTION 設定連線字串
+4. 建立 `.env` 檔案:
+   請參考以下範例自行建立檔案，並和csproj檔同路徑<br>
+   此為作品專用的預設連線字串，搭配 Docker SQL Server 容器使用
+    > ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TenantSampleDb;User Id=sa;Password=YourStrong!Passw0rd;
 
 # 自動化部署與執行：GitHub Actions + Docker 
 本專案支援自動打包成 Docker Image 並推送至 GitHub Packages（GHCR），也可在本地或 CI/CD 環境中以容器執行資料庫 Migration 
